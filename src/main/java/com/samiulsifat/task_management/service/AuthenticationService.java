@@ -51,15 +51,18 @@ public class AuthenticationService {
         System.out.println("Username: " + input.getUsername());
         System.out.println("Password: " + passwordEncoder.encode(input.getPassword()));
         System.out.println("Password match: " + passwordEncoder.matches(input.getPassword(), userService.findByUsername(input.getUsername()).getPassword()));
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(input.getUsername(), passwordEncoder.encode(input.getPassword()))
-        );
-        System.out.println("isAuthenticated: " + authentication.isAuthenticated());
-        if (authentication.isAuthenticated()) {
-            System.out.println("The user successfully authenticated");
-            return userService.findByUsername(input.getUsername());
-        } else {
-            System.out.println("The user not found");
+
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(input.getUsername(), input.getPassword())
+            );
+            if (authentication.isAuthenticated()) {
+                System.out.println("The user successfully authenticated");
+                return userService.findByUsername(input.getUsername());
+            }
+        } catch (Exception e) {
+            System.out.println("Authentication Failed: " + e.getMessage());
+            return null;
         }
         return null;
     }

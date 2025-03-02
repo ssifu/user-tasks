@@ -1,18 +1,17 @@
 package com.samiulsifat.task_management.controller;
 
-import com.samiulsifat.task_management.dto.LoginDto;
-import com.samiulsifat.task_management.dto.RegisterDto;
 import com.samiulsifat.task_management.model.User;
 import com.samiulsifat.task_management.service.AuthenticationService;
 import com.samiulsifat.task_management.service.JwtService;
 import com.samiulsifat.task_management.service.UserService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(path = "/users")
 public class UserController {
 
     private final UserService userService;
@@ -25,40 +24,8 @@ public class UserController {
         this.authenticationService = authenticationService;
     }
 
-//    @GetMapping("/")
-//    public List<User> getAllUser() {
-//        return userService.findAllUser();
-//    }
-
-    @GetMapping("/{username}")
-    public User getUserByUsername(@PathVariable("username") String username) {
-        return userService.findByUsername(username);
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody RegisterDto user) {
-        if (user.getRole() == null) {
-            user.setRole("USER");
-        }
-        User registeredUser = authenticationService.signup(user);
-
-        return ResponseEntity.ok(registeredUser);
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginDto loginDto) {
-        User authenticatedUser = authenticationService.authenticate(loginDto);
-        if (authenticatedUser == null) {
-            LoginResponse loginResponse = new LoginResponse();
-            loginResponse.setToken(null);
-            return (ResponseEntity<LoginResponse>) ResponseEntity.badRequest();
-        }
-        System.out.println("Authenticated User: " + authenticatedUser);
-        String jwtToken = jwtService.generateToken(authenticatedUser.getUsername(), authenticatedUser.getRole());
-
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setToken(jwtToken);
-
-        return ResponseEntity.ok(loginResponse);
+    @GetMapping("/")
+    public List<User> getAllUsers() {
+        return userService.findAllUser();
     }
 }

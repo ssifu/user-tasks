@@ -31,8 +31,6 @@ public class AuthenticationService {
 
         User existingUser = userService.findByUsername(input.getUsername());
 
-        System.out.println("Existing User: " + existingUser);
-
         if (existingUser != null) {
             throw new RuntimeException("Username is already exists");
         }
@@ -47,10 +45,10 @@ public class AuthenticationService {
     }
 
     public User authenticate(LoginDto input) {
-        System.out.println("Inside authenticate");
-        System.out.println("Username: " + input.getUsername());
-        System.out.println("Password: " + passwordEncoder.encode(input.getPassword()));
-        System.out.println("Password match: " + passwordEncoder.matches(input.getPassword(), userService.findByUsername(input.getUsername()).getPassword()));
+//        System.out.println("Inside authenticate");
+//        System.out.println("Username: " + input.getUsername());
+//        System.out.println("Password: " + passwordEncoder.encode(input.getPassword()));
+//        System.out.println("Password match: " + passwordEncoder.matches(input.getPassword(), userService.findByUsername(input.getUsername()).getPassword()));
 
         try {
             Authentication authentication = authenticationManager.authenticate(

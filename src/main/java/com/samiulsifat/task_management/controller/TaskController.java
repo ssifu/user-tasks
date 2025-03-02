@@ -2,6 +2,8 @@ package com.samiulsifat.task_management.controller;
 
 import com.samiulsifat.task_management.model.Task;
 import com.samiulsifat.task_management.service.TaskService;
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,9 +24,15 @@ public class TaskController {
     }
 
     @PostMapping
-    public Task addTask(@RequestBody Task task) {
-        taskService.addTask(task);
-        return task;
+    public String createTask(HttpServletRequest request, @RequestBody Task task) {
+        String authHeader = request.getHeader("Authorization");
+        task.setStatus("Pending");
+        return taskService.addTask(task, authHeader.substring(7));
+    }
+
+    @PostMapping("/assign")
+    public String assignTask(@RequestParam("task_id") String taskId, @RequestParam("username") String username) {
+        return taskService.assignTask(taskId, username);
     }
 
 }

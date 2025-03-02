@@ -7,7 +7,7 @@ import java.util.List;
 
 @Repository
 public interface TaskRepository {
-    String addTask(Task task);
+    String addTask(Task task, String jwtToken);
     String removeTask(String taskId);
     String assignTask(String taskId, String username);
     List<Task> getAllTask();

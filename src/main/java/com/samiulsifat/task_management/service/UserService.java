@@ -1,7 +1,9 @@
 package com.samiulsifat.task_management.service;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.samiulsifat.task_management.model.Task;
 import com.samiulsifat.task_management.model.User;
 import com.samiulsifat.task_management.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,6 @@ public class UserService implements UserRepository {
 
     @Override
     public void addUser(User user) {
-        System.out.println(user);
         dynamoDBMapper.save(user);
     }
 
@@ -30,13 +31,26 @@ public class UserService implements UserRepository {
 
     @Override
     public User findByUsername(String username) {
-        System.out.println("Username: " + username);
         return dynamoDBMapper.load(User.class, username);
     }
 
     @Override
     public List<User> findAllUser() {
         return dynamoDBMapper.scan(User.class, new DynamoDBScanExpression());
+    }
+
+    @Override
+    public List<Task> findAllTasksByUsername(String username) {
+        Task taskKey = new Task();
+        taskKey.setAssignedTo(username);
+
+        DynamoDBQueryExpression<Task> queryExpression =
+                new DynamoDBQueryExpression<Task>()
+                        .withHashKeyValues(taskKey)
+                        .withIndexName("AssignedToIndex")
+                        .withConsistentRead(false);
+
+        return dynamoDBMapper.query(Task.class, queryExpression);
     }
 }
 /*

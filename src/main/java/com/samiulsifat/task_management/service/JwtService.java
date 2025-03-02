@@ -22,7 +22,7 @@ public class JwtService {
 
     @Value("${security.jwt.secret-key}")
     private String SECRET_KEY;
-    private final long EXPIRATION_TIME = 1000 * 60 * 60 * 24;
+    private final long EXPIRATION_TIME = 60 * 60 * 24 * 30;
 
     public JwtService() {
 //        try {
@@ -39,7 +39,7 @@ public class JwtService {
                 .claims()
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 30))
+                .expiration(new Date(System.currentTimeMillis() + (30L * 24 * 60 * 60 * 1000)))
                 .and()
                 .claim("role", role)
                 .signWith(getKey())

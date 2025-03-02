@@ -1,11 +1,14 @@
 package com.samiulsifat.task_management.controller;
 
+import com.samiulsifat.task_management.model.Task;
 import com.samiulsifat.task_management.model.User;
 import com.samiulsifat.task_management.service.AuthenticationService;
 import com.samiulsifat.task_management.service.JwtService;
 import com.samiulsifat.task_management.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,5 +30,12 @@ public class UserController {
     @GetMapping("/")
     public List<User> getAllUsers() {
         return userService.findAllUser();
+    }
+
+    @GetMapping("/tasks")
+    public List<Task> getAllTasksByUsername(HttpServletRequest request) {
+        String jwtToken = request.getHeader("Authorization").substring(7);
+        String username = jwtService.extractUsername(jwtToken);
+        return userService.findAllTasksByUsername(username);
     }
 }

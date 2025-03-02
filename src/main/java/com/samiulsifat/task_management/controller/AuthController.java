@@ -31,29 +31,23 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody RegisterDto user) {
+    public String registerUser(@RequestBody RegisterDto user) {
         if (user.getRole() == null) {
             user.setRole("USER");
         }
         User registeredUser = authenticationService.signup(user);
 
-        return ResponseEntity.ok(registeredUser);
+        return "User registered successfully";
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginDto loginDto) {
+    public String authenticate(@RequestBody LoginDto loginDto) {
         User authenticatedUser = authenticationService.authenticate(loginDto);
         if (authenticatedUser == null) {
-            LoginResponse loginResponse = new LoginResponse();
-            loginResponse.setToken(null);
-            return (ResponseEntity<LoginResponse>) ResponseEntity.badRequest();
+            return null;
         }
         System.out.println("Authenticated User: " + authenticatedUser);
-        String jwtToken = jwtService.generateToken(authenticatedUser.getUsername(), authenticatedUser.getRole());
 
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setToken(jwtToken);
-
-        return ResponseEntity.ok(loginResponse);
+        return jwtService.generateToken(authenticatedUser.getUsername(), authenticatedUser.getRole());
     }
 }

@@ -11,4 +11,5 @@ public interface TaskRepository {
     String removeTask(String taskId);
     String assignTask(String taskId, String username);
     List<Task> getAllTask();
+    String updateTaskStatus(String taskId, String status);
 }

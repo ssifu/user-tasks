@@ -56,4 +56,15 @@ public class TaskService implements TaskRepository {
     public List<Task> getAllTask() {
         return dynamoDBMapper.scan(Task.class, new DynamoDBScanExpression());
     }
+
+    @Override
+    public String updateTaskStatus(String taskId, String status) {
+        Task task = dynamoDBMapper.load(Task.class, taskId);
+        if (task == null) {
+            return "Task with taskId " + taskId + " is not available";
+        }
+        task.setStatus(status);
+        dynamoDBMapper.save(task);
+        return "Task with id " + taskId + " status updated to" + status;
+    }
 }

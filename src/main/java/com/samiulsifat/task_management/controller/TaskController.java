@@ -35,4 +35,9 @@ public class TaskController {
         return taskService.assignTask(taskId, username);
     }
 
+    @PutMapping("/update/status")
+    public String updateTaskStatus(@RequestParam("task_id") String taskId, @RequestParam("status") String status) {
+        return taskService.updateTaskStatus(taskId, status);
+    }
+
 }

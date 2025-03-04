@@ -34,14 +34,14 @@ public class JwtService {
 //        }
     }
 
-    public String generateToken(String username, String role) {
+    public String generateToken(String username) {
         return Jwts.builder()
                 .claims()
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + (30L * 24 * 60 * 60 * 1000)))
                 .and()
-                .claim("role", role)
+//                .claim("role", role)
                 .signWith(getKey())
                 .compact();
     }

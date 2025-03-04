@@ -1,11 +1,14 @@
 package com.samiulsifat.task_management.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.samiulsifat.task_management.config.RoleSetConverter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @DynamoDBTable(tableName = "Users")
 public class User implements UserDetails {
@@ -15,16 +18,28 @@ public class User implements UserDetails {
     @DynamoDBAttribute(attributeName = "password")
     private String password;
 
-    @DynamoDBAttribute(attributeName = "role")
-    private String role;
+//    @DynamoDBAttribute(attributeName = "role")
+//    private Role role;
 
-    public User(String username, String password, String role) {
+    @DynamoDBAttribute(attributeName = "roles")
+    @DynamoDBTypeConverted(converter = RoleSetConverter.class)
+    private Set<Role> roles;
+
+    public User(String username, String password, Set<Role> roles) {
         this.username = username;
         this.password = password;
-        this.role = role;
+        this.roles = roles;
     }
 
     public User() {
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public String getUsername() {
@@ -62,7 +77,9 @@ public class User implements UserDetails {
     @Override
     @DynamoDBIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
+                .toList();
     }
 
     public String getPassword() {
@@ -73,20 +90,22 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public String getRole() {
-        return this.role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
+//    public Role getRole() {
+//        return this.role;
+//    }
+//
+//    public void setRole(Role role) {
+//        this.role = role;
+//    }
 
     @Override
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
                 '}';
     }
 }
+
+// eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbm5hc21pdGgiLCJpYXQiOjE3NDEwODEzMzQsImV4cCI6MTc0MzY3MzMzNH0.zyKrk17nosR6hI91K_ufilaUxll37kWhDlpJAgZIFusvLHusD3iGs6S6wB60uho1
+// eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzYW1pdWxzaWZhdCIsImlhdCI6MTc0MTA4MTM3NCwiZXhwIjoxNzQzNjczMzc0fQ.4OhTKt7GVP87sQAmRswnoHhqh2BXrXbLpJ3alKHfTCWIflBHJwi4_Ynjj6emaE4V

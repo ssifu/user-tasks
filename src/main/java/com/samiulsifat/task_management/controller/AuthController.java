@@ -6,10 +6,11 @@ import com.samiulsifat.task_management.model.User;
 import com.samiulsifat.task_management.service.AuthenticationService;
 import com.samiulsifat.task_management.service.JwtService;
 import com.samiulsifat.task_management.service.UserService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
+
+import static com.samiulsifat.task_management.model.Role.USER;
 
 @RestController
 @RequestMapping("/auth")
@@ -32,9 +33,12 @@ public class AuthController {
 
     @PostMapping("/register")
     public String registerUser(@RequestBody RegisterDto user) {
-        if (user.getRole() == null) {
-            user.setRole("USER");
+        if (user.getRoles() == null) {
+            user.setRoles(Set.of(USER));
+        } else {
+            user.getRoles().add(USER);
         }
+
         User registeredUser = authenticationService.signup(user);
 
         return "User registered successfully";
@@ -48,6 +52,6 @@ public class AuthController {
         }
         System.out.println("Authenticated User: " + authenticatedUser);
 
-        return jwtService.generateToken(authenticatedUser.getUsername(), authenticatedUser.getRole());
+        return jwtService.generateToken(authenticatedUser.getUsername());
     }
 }

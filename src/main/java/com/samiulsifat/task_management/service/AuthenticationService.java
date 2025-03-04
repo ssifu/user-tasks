@@ -38,17 +38,13 @@ public class AuthenticationService {
         User user = new User(
                 input.getUsername(),
                 passwordEncoder.encode(input.getPassword()),
-                input.getRole()
+                input.getRoles()
         );
         userService.addUser(user);
         return user;
     }
 
     public User authenticate(LoginDto input) {
-//        System.out.println("Inside authenticate");
-//        System.out.println("Username: " + input.getUsername());
-//        System.out.println("Password: " + passwordEncoder.encode(input.getPassword()));
-//        System.out.println("Password match: " + passwordEncoder.matches(input.getPassword(), userService.findByUsername(input.getUsername()).getPassword()));
 
         try {
             Authentication authentication = authenticationManager.authenticate(

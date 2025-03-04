@@ -1,9 +1,13 @@
 package com.samiulsifat.task_management.dto;
 
+import com.samiulsifat.task_management.model.Role;
+
+import java.util.Set;
+
 public class RegisterDto {
     private String username;
     private String password;
-    private String role;
+    private Set<Role> roles;
 
     public String getUsername() {
         return username;
@@ -21,11 +25,11 @@ public class RegisterDto {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(Set<Role> role) {
+        this.roles = role;
     }
 }

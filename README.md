@@ -1,11 +1,60 @@
-## APIs
-### Authentication APIs:
-- `POST /auth/register`: For registering the users
-- `POST /auth/login`: For user login and take back JWT token
-### User APIs:
-- `GET /users/`: To get all the users
-- `GET /users/tasks`: To get tasks of a specific user (username extracted from JWT token)
-### Task APIs:
-- `POST /tasks`: To create a task
-- `POST /tasks?task_id=<value>&username=<value>`: To assign a task to a user
-- `PUT /tasks/update/status?task_id=<value>&username=<value>`: To update a tasks status
+# APIs
+## Authentication APIs:
+### Register
+- **URL:** `/auth/register`
+- **Method:** `POST`
+- **Request Body:**
+```json
+{
+    "username": username,
+    "password": password,
+    "roles": ["ROLE1", "ROLE2", ...]
+}
+```
+### Login
+- **URL:** `/auth/login`
+- **Method:** `POST`
+- **Request Body:**
+```json
+{
+    "username": username,
+    "password": password
+}
+```
+
+## User APIs:
+## Tasks of a specific user
+- **URL:** `/users/tasks`
+- **Method:** `GET`
+
+## Admin APIs:
+### Get all the users
+- **URL:** `/admin/users`
+- **Method:** `GET`
+
+## Task APIs:
+### Get all the tasks (ADMIN)
+- **URL:** `/tasks/`
+- **Method:** `GET`
+
+### Create a task (ADMIN can assign the task to anyone and USER can only create task for themselves)
+- **URL:** `/tasks`
+- **Method:** `POST`
+- **Request Body:**
+```json
+{
+    "taskId": "1",
+    "assignedTo": "samiulsifat",
+    "title": "title",
+    "description": "desciption",
+    "dueDate": "01/01/2025"
+}
+```
+
+### Assign a task (ADMIN)
+- **URL:** `/tasks/assign?task_id=taskId&username=username`
+- **Method:** `PUT`
+
+### Update a task status
+- **URL:** `/tasks/update/status?task_id=taskId&username=username`
+- **Method:** `PUT`

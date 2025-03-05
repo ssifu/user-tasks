@@ -21,7 +21,7 @@ public class TaskController {
 
     @GetMapping("/")
     public ResponseEntity<?> getAllTasks() {
-        return ResponseEntity.status(HttpStatus.FOUND).body(new ApiResponse("Success", "List of all the tasks",taskService.getAllTask()));
+        return ResponseEntity.status(HttpStatus.FOUND).body(new ApiResponse("Success", "List of all the tasks", taskService.getAllTask()));
     }
 
     @PostMapping("/create")
@@ -31,7 +31,7 @@ public class TaskController {
         return taskService.createTask(task, authHeader.substring(7));
     }
 
-    @PostMapping("/assign")
+    @PutMapping("/assign")
     public ResponseEntity<?> assignTask(@RequestParam("task_id") String taskId, @RequestParam("username") String username) {
         return taskService.assignTask(taskId, username);
     }

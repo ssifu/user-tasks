@@ -24,11 +24,6 @@ public class UserService implements UserRepository {
         dynamoDBMapper.save(user);
     }
 
-//    @Override
-//    public void removeUser(String username) {
-//
-//    }
-
     @Override
     public User findByUsername(String username) {
         return dynamoDBMapper.load(User.class, username);
@@ -41,12 +36,12 @@ public class UserService implements UserRepository {
 
     @Override
     public List<Task> findAllTasksByUsername(String username) {
-        Task taskKey = new Task();
-        taskKey.setAssignedTo(username);
+        Task task = new Task();
+        task.setAssignedTo(username);
 
         DynamoDBQueryExpression<Task> queryExpression =
                 new DynamoDBQueryExpression<Task>()
-                        .withHashKeyValues(taskKey)
+                        .withHashKeyValues(task)
                         .withIndexName("AssignedToIndex")
                         .withConsistentRead(false);
 

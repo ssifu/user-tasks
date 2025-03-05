@@ -6,6 +6,8 @@ import com.samiulsifat.task_management.model.User;
 import com.samiulsifat.task_management.service.AuthenticationService;
 import com.samiulsifat.task_management.service.JwtService;
 import com.samiulsifat.task_management.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -26,31 +28,30 @@ public class AuthController {
         this.authenticationService = authenticationService;
     }
 
-    @GetMapping("/{username}")
-    public User getUserByUsername(@PathVariable("username") String username) {
-        return userService.findByUsername(username);
-    }
-
     @PostMapping("/register")
-    public String registerUser(@RequestBody RegisterDto user) {
+    public ResponseEntity<?> registerUser(@RequestBody RegisterDto user) {
         if (user.getRoles() == null) {
             user.setRoles(Set.of(USER));
         } else {
             user.getRoles().add(USER);
         }
 
-        User registeredUser = authenticationService.signup(user);
+        ApiResponse response = authenticationService.signup(user);
 
-        return "User registered successfully";
+        if ("Error".equals(response.getStatus())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/login")
-    public String authenticate(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<?> authenticate(@RequestBody LoginDto loginDto) {
         User authenticatedUser = authenticationService.authenticate(loginDto);
         if (authenticatedUser == null) {
-            return null;
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse("Error", "Username or password wrong", loginDto));
         }
 
-        return jwtService.generateToken(authenticatedUser.getUsername());
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ApiResponse("Success", "Login successful", jwtService.generateToken(authenticatedUser.getUsername())));
     }
 }

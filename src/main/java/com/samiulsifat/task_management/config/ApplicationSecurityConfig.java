@@ -32,6 +32,7 @@ public class ApplicationSecurityConfig {
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/admin/**").hasRole(ADMIN.name())
+                        .requestMatchers("/tasks/").hasRole(ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

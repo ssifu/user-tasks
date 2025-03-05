@@ -1,5 +1,6 @@
 package com.samiulsifat.task_management.service;
 
+import com.samiulsifat.task_management.controller.ApiResponse;
 import com.samiulsifat.task_management.dto.LoginDto;
 import com.samiulsifat.task_management.dto.RegisterDto;
 import com.samiulsifat.task_management.model.User;
@@ -27,12 +28,12 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
-    public User signup(RegisterDto input) {
+    public ApiResponse signup(RegisterDto input) {
 
         User existingUser = userService.findByUsername(input.getUsername());
 
         if (existingUser != null) {
-            throw new RuntimeException("Username is already exists");
+            return new ApiResponse("Error", "User already exists", null);
         }
 
         User user = new User(
@@ -41,7 +42,7 @@ public class AuthenticationService {
                 input.getRoles()
         );
         userService.addUser(user);
-        return user;
+        return new ApiResponse("Success", "User registered successfully", user);
     }
 
     public User authenticate(LoginDto input) {

@@ -50,7 +50,6 @@ public class AuthController {
         if (authenticatedUser == null) {
             return null;
         }
-        System.out.println("Authenticated User: " + authenticatedUser);
 
         return jwtService.generateToken(authenticatedUser.getUsername());
     }

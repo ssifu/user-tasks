@@ -51,11 +51,9 @@ public class AuthenticationService {
                     new UsernamePasswordAuthenticationToken(input.getUsername(), input.getPassword())
             );
             if (authentication.isAuthenticated()) {
-                System.out.println("The user successfully authenticated");
                 return userService.findByUsername(input.getUsername());
             }
         } catch (Exception e) {
-            System.out.println("Authentication Failed: " + e.getMessage());
             return null;
         }
         return null;

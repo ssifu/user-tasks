@@ -84,3 +84,4 @@
 ### Update a task status
 - **URL:** `/tasks/update/status?task_id=taskId&username=username`
 - **Method:** `PUT`
+- **Access:** `USER`, `ADMIN`

@@ -1,4 +1,4 @@
-package com.samiulsifat.task_management.controller;
+package com.samiulsifat.task_management.response;
 
 public class ApiResponse {
     private String status;

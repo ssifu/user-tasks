@@ -2,7 +2,7 @@ package com.samiulsifat.task_management.service;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
-import com.samiulsifat.task_management.controller.ApiResponse;
+import com.samiulsifat.task_management.response.ApiResponse;
 import com.samiulsifat.task_management.model.Role;
 import com.samiulsifat.task_management.model.Task;
 import com.samiulsifat.task_management.model.User;

@@ -1,6 +1,6 @@
 package com.samiulsifat.task_management.service;
 
-import com.samiulsifat.task_management.controller.ApiResponse;
+import com.samiulsifat.task_management.response.ApiResponse;
 import com.samiulsifat.task_management.dto.LoginDto;
 import com.samiulsifat.task_management.dto.RegisterDto;
 import com.samiulsifat.task_management.model.User;

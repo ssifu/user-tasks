@@ -1,6 +1,6 @@
 package com.samiulsifat.task_management.repository;
 
-import com.samiulsifat.task_management.controller.ApiResponse;
+import com.samiulsifat.task_management.response.ApiResponse;
 import com.samiulsifat.task_management.model.Task;
 import com.samiulsifat.task_management.model.User;
 import org.springframework.stereotype.Repository;

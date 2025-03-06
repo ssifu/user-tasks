@@ -32,6 +32,22 @@
 - **URL:** `/admin/users`
 - **Method:** `GET`
 
+### Create an admin account
+- **URL:** `/admin/create`
+- **Method:** `POST`
+- **Request Body:**
+```json
+{
+    "username": username,
+    "password": password,
+    "roles": ["ROLE1", "ROLE2", ...]
+}
+```
+
+### Update user to admin
+- **URL:** `/admin/update-user?user_id=userId`
+- **Method:** `PUT`
+
 ## Task APIs:
 ### Get all the tasks (ADMIN)
 - **URL:** `/tasks/`

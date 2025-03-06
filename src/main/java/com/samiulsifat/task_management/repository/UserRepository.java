@@ -1,5 +1,6 @@
 package com.samiulsifat.task_management.repository;
 
+import com.samiulsifat.task_management.controller.ApiResponse;
 import com.samiulsifat.task_management.model.Task;
 import com.samiulsifat.task_management.model.User;
 import org.springframework.stereotype.Repository;
@@ -12,4 +13,5 @@ public interface UserRepository {
     User findByUsername(String username);
     List<User> findAllUser();
     List<Task> findAllTasksByUsername(String username);
+    ApiResponse updateUserToAdmin(String userId);
 }

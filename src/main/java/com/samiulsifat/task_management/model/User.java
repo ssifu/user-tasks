@@ -15,20 +15,67 @@ public class User implements UserDetails {
     @DynamoDBHashKey(attributeName = "username")
     private String username;
 
+    @DynamoDBAttribute(attributeName = "email")
+    private String email;
+
     @DynamoDBAttribute(attributeName = "password")
     private String password;
+
+    @DynamoDBAttribute(attributeName = "created_at")
+    private String createdAt;
 
     @DynamoDBAttribute(attributeName = "roles")
     @DynamoDBTypeConverted(converter = RoleSetConverter.class)
     private Set<Role> roles;
 
-    public User(String username, String password, Set<Role> roles) {
+    public User(
+            String username,
+            String email,
+            String password,
+            Set<Role> roles
+    ) {
         this.username = username;
+        this.email = email;
         this.password = password;
+        this.createdAt = createdAt;
         this.roles = roles;
     }
 
     public User() {
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Set<Role> getRoles() {
@@ -37,10 +84,6 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
-
-    public String getUsername() {
-        return this.username;
     }
 
     @Override
@@ -67,10 +110,6 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     @Override
     @DynamoDBIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -85,14 +124,6 @@ public class User implements UserDetails {
                         .collect(Collectors.toSet())
         );
         return authorities;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @Override

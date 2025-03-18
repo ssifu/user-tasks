@@ -10,6 +10,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 @Service
 public class AuthenticationService {
@@ -39,6 +42,7 @@ public class AuthenticationService {
         User user = new User(
                 input.getUsername(),
                 passwordEncoder.encode(input.getPassword()),
+                new SimpleDateFormat("MM/dd/yyyy").format(new Date()),
                 input.getRoles()
         );
         userService.addUser(user);
